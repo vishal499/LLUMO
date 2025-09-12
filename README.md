@@ -76,6 +76,16 @@ uvicorn main:app --reload
    - Returns department-wise average salary
 ---
 
+# 🧪 Testing
+** 1.Open Swagger UI:**
+```bash
+http://127.0.0.1:8000/docs
+
+```
+** 2.Authorize using JWT token **
+** 3.Test endpoints one by one **
+
+
 
 
 
