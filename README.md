@@ -27,3 +27,9 @@ A FastAPI + MongoDB project to manage employee data with features like create, r
 ```bash
 git clone https://github.com/vishal499/LLUMO.git
 ```
+
+**Install Dependencies**
+```bash
+pip install -r requirements.txt
+```
+
