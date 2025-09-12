@@ -82,9 +82,9 @@ uvicorn main:app --reload
 http://127.0.0.1:8000/docs
 
 ```
-- 2.Authorize using JWT token 
- 
-- 3.Test endpoints one by one 
+- Authorize using JWT token 
+
+- Test endpoints one by one 
 
 
 
