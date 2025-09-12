@@ -86,6 +86,13 @@ http://127.0.0.1:8000/docs
 
 - Test endpoints one by one 
 
+---
+# 🔐 Notes
+- Passwords are hashed with bcrypt
+- JWT token expires after 60 minutes
+- Indexed fields improve performance for search and listing
+  
+---  
 
 
 
