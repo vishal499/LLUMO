@@ -21,4 +21,9 @@ A FastAPI + MongoDB project to manage employee data with features like create, r
 - Dependencies: Motor (async MongoDB driver), Pydantic, python-dotenv
 
 ---
+## Run Locally
 
+**Clone the project**
+```bash
+git clone https://github.com/vishal499/LLUMO.git
+```
