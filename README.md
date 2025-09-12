@@ -44,7 +44,7 @@ uvicorn main:app --reload
    - Requires JWT token
 
 ---
-## 1. List Employees ##
+## 2. List Employees ##
    - GET /employees
    - Optional query parameters:
       - department → filter by department
@@ -52,4 +52,31 @@ uvicorn main:app --reload
       - limit → pagination limit (default 10)
 
 ---
+## 3. Search Employees by Skill ##
+   - GET /employees/search?skill=Java
+   - Case-insensitive search
+   - Supports pagination (skip, limit)
+
+---
+## 4. Get Employee by ID ##
+   - GET /employees/{employee_id}
+
+---
+
+## 5. Update Employee ##
+   - PUT /employees/{employee_id}
+   - Only provide fields you want to update
+
+---
+## 6. Delete Employee ##
+   - DELETE /employees/{employee_id}
+---
+## 7. Average Salary by Department ##
+   - GET /employees/avg-salary
+   - Returns department-wise average salary
+---
+
+
+
+
    
