@@ -40,4 +40,6 @@ uvicorn main:app --reload
 ---
 # 📖 API Endpoints
 1. Create Employee
+   - POST /employees
+   - Requires JWT token
 
