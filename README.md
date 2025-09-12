@@ -43,3 +43,13 @@ uvicorn main:app --reload
    - POST /employees
    - Requires JWT token
 
+---
+## 1. List Employees ##
+   - GET /employees
+   - Optional query parameters:
+      - department → filter by department
+      - skip → pagination skip (default 0)
+      - limit → pagination limit (default 10)
+
+---
+   
