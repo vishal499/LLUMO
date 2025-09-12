@@ -32,4 +32,8 @@ git clone https://github.com/vishal499/LLUMO.git
 ```bash
 pip install -r requirements.txt
 ```
+**Start Your FastAPI App**
+```bash
+uvicorn main:app --reload
+```
 
