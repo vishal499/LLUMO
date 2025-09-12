@@ -12,3 +12,13 @@ A FastAPI + MongoDB project to manage employee data with features like create, r
 - Schema Validation: MongoDB JSON schema ensures data consistency.
 
 ---
+# 🛠 Tech Stack
+- Backend: FastAPI (Python)
+- Database: MongoDB (NoSQL)
+- Authentication: JWT tokens
+- Password Hashing: Passlib (bcrypt)
+- Pagination: Skip & limit for listing employees.
+- Dependencies: Motor (async MongoDB driver), Pydantic, python-dotenv
+
+---
+
