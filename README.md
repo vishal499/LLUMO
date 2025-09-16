@@ -92,6 +92,7 @@ http://127.0.0.1:8000/docs
 ## Screenshots
 
 ![image alt](https://github.com/vishal499/LLUMO/blob/58d73922259b949575903c18fa01d1410b76fdcc/Screenshot%202025-09-16%20115044.png)
+![image alt](https://github.com/vishal499/LLUMO/blob/6d6a05516a3095354f0cf0237152319464118113/Screenshot%202025-09-16%20115051.png)
 
 
    
