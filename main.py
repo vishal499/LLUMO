@@ -1,17 +1,12 @@
-
 import os
 import re
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException, Query, status, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi import FastAPI, HTTPException, Query, status
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 import motor.motor_asyncio
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-
 
 # Load .env if present
 load_dotenv()
@@ -26,50 +21,6 @@ app = FastAPI(title="Employees API - FastAPI + MongoDB")
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGODB_URI)
 db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
-
-# -------------------------
-# JWT Setup
-# -------------------------
-SECRET_KEY = "your-secret-key"  # change to a secure random key
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# Dummy user
-fake_users_db = {
-    "admin": {
-        "username": "admin",
-        "hashed_password": pwd_context.hash("password")
-    }
-}
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(status_code=401, detail="Invalid token")
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-    user = fake_users_db.get(username)
-    if user is None:
-        raise credentials_exception
-    return username
 
 # -------------------------
 # Pydantic Schemas
@@ -151,20 +102,9 @@ async def root():
     return {"message": "FastAPI + MongoDB API is running!"}
 
 # -------------------------
-# Token Endpoint
-# -------------------------
-@app.post("/token")
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = fake_users_db.get(form_data.username)
-    if not user or not verify_password(form_data.password, user["hashed_password"]):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    access_token = create_access_token(data={"sub": user["username"]})
-    return {"access_token": access_token, "token_type": "bearer"}
-
-# -------------------------
 # 1. Create Employee
 # -------------------------
-@app.post("/employees", status_code=status.HTTP_201_CREATED, dependencies=[Depends(get_current_user)])
+@app.post("/employees", status_code=status.HTTP_201_CREATED)
 async def create_employee(payload: EmployeeCreate):
     existing = await collection.find_one({"employee_id": payload.employee_id})
     if existing:
@@ -178,7 +118,7 @@ async def create_employee(payload: EmployeeCreate):
 # -------------------------
 # 2. Search Employees by Skill
 # -------------------------
-@app.get("/employees/search", dependencies=[Depends(get_current_user)])
+@app.get("/employees/search")
 async def search_employees_by_skill(
     skill: str = Query(...),
     skip: int = Query(0, ge=0),
@@ -195,7 +135,7 @@ async def search_employees_by_skill(
 # -------------------------
 # 3. Average Salary by Department
 # -------------------------
-@app.get("/employees/avg-salary", dependencies=[Depends(get_current_user)])
+@app.get("/employees/avg-salary")
 async def avg_salary_by_department():
     pipeline = [
         {"$group": {"_id": "$department", "avg_salary": {"$avg": "$salary"}}},
@@ -210,7 +150,7 @@ async def avg_salary_by_department():
 # -------------------------
 # 4. List Employees
 # -------------------------
-@app.get("/employees", dependencies=[Depends(get_current_user)])
+@app.get("/employees")
 async def list_employees(
     department: Optional[str] = Query(None),
     skip: int = Query(0, ge=0),
@@ -226,7 +166,7 @@ async def list_employees(
 # -------------------------
 # 5. Get Employee by ID
 # -------------------------
-@app.get("/employees/{employee_id}", dependencies=[Depends(get_current_user)])
+@app.get("/employees/{employee_id}")
 async def get_employee(employee_id: str):
     doc = await collection.find_one({"employee_id": employee_id})
     if not doc:
@@ -236,7 +176,7 @@ async def get_employee(employee_id: str):
 # -------------------------
 # 6. Update Employee
 # -------------------------
-@app.put("/employees/{employee_id}", dependencies=[Depends(get_current_user)])
+@app.put("/employees/{employee_id}")
 async def update_employee(employee_id: str, payload: EmployeeUpdate):
     update_data = {k: v for k, v in payload.dict().items() if v is not None}
     if not update_data:
@@ -252,7 +192,7 @@ async def update_employee(employee_id: str, payload: EmployeeUpdate):
 # -------------------------
 # 7. Delete Employee
 # -------------------------
-@app.delete("/employees/{employee_id}", dependencies=[Depends(get_current_user)])
+@app.delete("/employees/{employee_id}")
 async def delete_employee(employee_id: str):
     result = await collection.delete_one({"employee_id": employee_id})
     if result.deleted_count == 0:
