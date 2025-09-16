@@ -1,9 +1,8 @@
 # 🏢 Employee Management API
 
-A FastAPI + MongoDB project to manage employee data with features like create, read, update, delete, search by skill, and view average salary by department. Includes JWT-based authentication and pagination.
+A FastAPI + MongoDB project to manage employee data with features like create, read, update, delete, search by skill, and view average salary by department. Includes pagination.
 ---
 # ⚡ Features
-- JWT Authentication: Secure access to all endpoints.
 - CRUD Operations: Create, Read, Update, Delete employees.
 - Search Employees: Find employees by skill (case-insensitive).
 - Average Salary: View average salary grouped by department.
@@ -15,7 +14,6 @@ A FastAPI + MongoDB project to manage employee data with features like create, r
 # 🛠 Tech Stack
 - Backend: FastAPI (Python)
 - Database: MongoDB (NoSQL)
-- Authentication: JWT tokens
 - Password Hashing: Passlib (bcrypt)
 - Pagination: Skip & limit for listing employees.
 - Dependencies: Motor (async MongoDB driver), Pydantic, python-dotenv
@@ -41,7 +39,7 @@ uvicorn main:app --reload
 # 📖 API Endpoints
 ## 1. Create Employee ##
    - POST /employees
-   - Requires JWT token
+     
 
 ---
 ## 2. List Employees ##
@@ -82,14 +80,11 @@ uvicorn main:app --reload
 http://127.0.0.1:8000/docs
 
 ```
-- Authorize using JWT token 
 
 - Test endpoints one by one 
 
 ---
 # 🔐 Notes
-- Passwords are hashed with bcrypt
-- JWT token expires after 60 minutes
 - Indexed fields improve performance for search and listing
   
 ---  
